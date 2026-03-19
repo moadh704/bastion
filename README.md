@@ -1,193 +1,152 @@
-# AdminOS — User Management Dashboard
+# Bastion — User Management Dashboard
 
-A full-stack admin panel built with Vue 3 and Express.js, featuring role-based access control, user management, and a glassmorphism UI design.
+![Stack](https://img.shields.io/badge/Vue_3-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D)
+![Stack](https://img.shields.io/badge/Express.js-404D59?style=for-the-badge&logo=express)
+![Stack](https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white)
+![Stack](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=jsonwebtokens)
+![Stack](https://img.shields.io/badge/Vuetify-1867C0?style=for-the-badge&logo=vuetify)
 
----
-
-## Features
-
-- JWT Authentication — secure login and registration
-- Role-Based Access Control — superadmin, admin, and user roles
-- User Management — ban, unban, delete accounts, and change roles
-- Activity Logs — full audit trail of every admin action
-- Dashboard Stats — total users, active, banned, admins, new this week
-- Security — Helmet.js headers, rate limiting, bcrypt password hashing, parameterized queries
-- Glassmorphism UI — dark theme with frosted glass cards and purple/blue gradients
+A full-stack admin dashboard built with Vue 3 and Express.js, designed to demonstrate production-level full-stack development with a strong emphasis on security, clean architecture, and modern UI design.
 
 ---
 
-## Tech Stack
+## 🎯 What Is Bastion?
 
-### Backend
-| Technology | Purpose |
-|---|---|
-| Node.js + Express.js | REST API server |
-| MySQL | Relational database |
-| JWT (jsonwebtoken) | Authentication tokens |
-| bcryptjs | Password hashing |
-| Helmet.js | Secure HTTP headers |
-| express-rate-limit | Brute force protection |
-| cors | Cross-origin resource sharing |
-| dotenv | Environment variable management |
+Bastion is a complete user management platform where administrators can control user accounts, monitor platform activity, and manage access levels in real time. It was built from scratch as a showcase of full-stack Vue + Express development — covering everything from database design and REST API architecture to JWT authentication, role-based access control, and a polished glassmorphism frontend.
 
-### Frontend
-| Technology | Purpose |
-|---|---|
-| Vue 3 | Frontend framework |
-| Vite | Build tool |
-| Vuetify 3 | UI component library |
-| Pinia | Global state management |
-| Vue Router | Client-side routing |
-| Axios | HTTP client |
-| Google Fonts (Syne + Outfit) | Typography |
+Every decision in this project was made with real-world standards in mind — not just "make it work" but "make it right."
 
 ---
 
-## Project Structure
+## ✨ Features
+
+### 🔐 Authentication & Security
+- JWT-based login system with 7-day token expiry and automatic session handling — expired tokens redirect the user to login instantly instead of showing broken UI
+- Passwords hashed with bcrypt using 10 salt rounds — never stored in plain text
+- Role-based access control across three levels: **Superadmin**, **Admin**, and **User** — enforced on both the backend (middleware) and frontend (route guards)
+- Self-protection logic — no admin can ban, delete, or demote their own account, preventing accidental or malicious lockouts
+- Rate limiting on auth routes — max 10 attempts per 15 minutes to prevent brute force attacks
+- Helmet.js for secure HTTP response headers out of the box
+- CORS restricted to whitelisted origins only — no open access in production
+- All database queries are parameterized — fully protected against SQL injection
+- Input validation on every endpoint using express-validator
+
+### 👥 User Management
+- Full CRUD on user accounts — create, view, ban, unban, delete
+- Role management — superadmin can promote or demote any user instantly
+- Admin password reset — superadmin can reset any user's password from the panel
+- Personal password change — every user can update their own password from their profile page
+- Users cannot be created with duplicate emails — validated on both frontend and backend
+
+### 📊 Dashboard & Monitoring
+- Live stats cards — total users, active accounts, banned accounts, admin count, and new signups this week
+- Full activity audit log — every admin action (ban, delete, role change, password reset, user creation) is recorded with actor name, action, target, and timestamp
+- Recent activity feed on the dashboard showing the latest 8 actions at a glance
+
+### 🔍 Data Tools
+- Search users in real time by name or email
+- Filter users by role — superadmin, admin, or user
+- Export the full user list to a CSV file with one click — includes ID, name, email, role, status, and join date
+- Pagination on the users table — handles large datasets cleanly
+
+### 🎨 UI & Experience
+- Glassmorphism design — frosted glass cards, layered gradients, and depth through blur effects
+- **4 fully switchable color themes** — Purple, Cyber, Matrix, and Crimson — each one changes the mesh background, sidebar accents, gradients, and avatar colors simultaneously. Theme persists across sessions via localStorage
+- Custom typography — Syne for headings (bold, geometric) and Outfit for body text (clean, readable)
+- Toast notification system — every action gives immediate success or error feedback
+- Confirmation dialogs before every destructive action — no accidental deletes or bans
+- User avatar initials with deterministic random colors — each user always gets the same color based on their name
+- Route guards on the frontend — users are redirected based on their role if they try to access unauthorized pages
+- 404 page for unknown routes — no blank crashes
+
+---
+
+## 🏗️ Architecture
+
+The project follows a clean separation of concerns across both frontend and backend:
+
+**Backend** is structured around the MVC pattern:
+- `routes/` — define API endpoints and attach middleware
+- `controllers/` — handle business logic for each endpoint
+- `middleware/` — JWT verification and role checking run before protected routes
+- `db/` — single MySQL connection pool shared across the app
+
+**Frontend** is structured around Vue 3's Composition API:
+- `views/` — full page components mapped to routes
+- `components/` — reusable UI pieces (table, stats cards, navbar, dialogs)
+- `stores/` — Pinia stores manage global state (auth, users, UI)
+- `api/` — single Axios instance with request and response interceptors
+
+This means adding a new feature always follows the same pattern: add a route → add a controller → add a store action → add a view or component. Clean, predictable, scalable.
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology | Why |
+|---|---|---|
+| Frontend Framework | Vue 3 (Composition API) | Reactive, component-based, modern |
+| Build Tool | Vite | Fast dev server, instant HMR |
+| UI Library | Vuetify 3 | Rich components, consistent design system |
+| State Management | Pinia | Lightweight, intuitive, Vue 3 native |
+| Routing | Vue Router 4 | Client-side routing with navigation guards |
+| HTTP Client | Axios | Interceptors for auth headers + error handling |
+| Backend Framework | Express.js | Minimal, flexible, industry standard |
+| Database | MySQL 8 | Relational, reliable, widely used |
+| Authentication | JSON Web Tokens | Stateless, scalable auth |
+| Password Security | bcryptjs | Industry standard password hashing |
+| Input Validation | express-validator | Clean, chainable validation rules |
+| Security Headers | Helmet.js | One line, dozens of security headers |
+| Rate Limiting | express-rate-limit | Brute force and abuse protection |
+| Fonts | Syne + Outfit (Google Fonts) | Distinctive, modern typography pair |
+
+---
+
+## 🔒 Security Summary
+
+This project was built with security as a first-class concern, not an afterthought:
+
+- ✅ Bcrypt password hashing (10 rounds)
+- ✅ JWT with cryptographically strong 128-character secret
+- ✅ Parameterized queries — SQL injection proof
+- ✅ Input validation on all routes
+- ✅ Helmet.js security headers
+- ✅ Rate limiting on authentication endpoints
+- ✅ CORS whitelist — production only accepts requests from the deployed frontend
+- ✅ Role-based access enforced on both frontend and backend independently
+- ✅ Self-protection — admins cannot lock themselves out
+- ✅ Token expiry handled gracefully — auto logout and redirect
+
+---
+
+## 📁 Project Structure
 
 ```
 user-management-dashboard/
-├── client/                   # Vue 3 frontend
+├── client/                  # Vue 3 + Vite frontend
 │   └── src/
-│       ├── api/              # Axios instance + interceptors
-│       ├── components/       # Reusable UI components
-│       ├── router/           # Vue Router + route guards
-│       ├── stores/           # Pinia state stores
-│       └── views/            # Page components
-└── server/                   # Express backend
-    ├── controllers/          # Route logic
-    ├── db/                   # MySQL connection
-    ├── middleware/           # Auth + role middleware
-    └── routes/               # API route definitions
+│       ├── api/             # Axios instance with interceptors
+│       ├── components/      # Reusable UI components
+│       ├── router/          # Routes + navigation guards
+│       ├── stores/          # Pinia state (auth, users, ui)
+│       └── views/           # Page components
+└── server/                  # Express.js backend
+    ├── controllers/         # Business logic
+    ├── db/                  # MySQL connection
+    ├── middleware/           # JWT + role protection
+    └── routes/              # API endpoint definitions
 ```
 
 ---
 
-## Getting Started
+## 🚀 Live Demo
 
-### Prerequisites
-- Node.js 18+
-- MySQL 8+
+🔗 **[Live Demo](#)** — coming soon
 
-### 1. Clone the repo
-```bash
-git clone https://github.com/moadh704/user-management-dashboard.git
-cd user-management-dashboard
-```
-
-### 2. Setup the backend
-```bash
-cd server
-npm install
-```
-
-Create a `.env` file inside `/server`:
-```
-PORT=5000
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=your_mysql_password
-DB_NAME=usermanagement
-JWT_SECRET=your_jwt_secret
-```
-
-### 3. Setup the database
-Run this in your MySQL shell:
-```sql
-CREATE DATABASE usermanagement;
-USE usermanagement;
-
-CREATE TABLE users (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(100) NOT NULL,
-  email VARCHAR(150) UNIQUE NOT NULL,
-  password VARCHAR(255) NOT NULL,
-  role ENUM('superadmin', 'admin', 'user') DEFAULT 'user',
-  status ENUM('active', 'banned') DEFAULT 'active',
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE activity_logs (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  actor_id INT NOT NULL,
-  action VARCHAR(255) NOT NULL,
-  target_user_id INT,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (actor_id) REFERENCES users(id) ON DELETE CASCADE
-);
-
-INSERT INTO users (name, email, password, role)
-VALUES (
-  'Super Admin',
-  'superadmin@admin.com',
-  '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
-  'superadmin'
-);
-```
-
-Default superadmin password: `password`
-
-### 4. Setup the frontend
-```bash
-cd ../client
-npm install
-```
-
-### 5. Run the project
-
-Start the backend (inside `/server`):
-```bash
-npm run dev
-```
-
-Start the frontend (inside `/client`):
-```bash
-npm run dev
-```
-
-- Backend runs on: `http://localhost:5000`
-- Frontend runs on: `http://localhost:5173`
+🔗 **[GitHub Repository](https://github.com/moadh704/user-management-dashboard)**
 
 ---
 
-## API Endpoints
+## 📌 Project Status
 
-### Auth
-| Method | Endpoint | Access |
-|---|---|---|
-| POST | /api/auth/register | Public |
-| POST | /api/auth/login | Public |
-
-### Users
-| Method | Endpoint | Access |
-|---|---|---|
-| GET | /api/users | Admin+ |
-| GET | /api/users/stats | Admin+ |
-| GET | /api/users/logs | Superadmin |
-| PUT | /api/users/:id/ban | Admin+ |
-| PUT | /api/users/:id/unban | Admin+ |
-| PUT | /api/users/:id/role | Superadmin |
-| DELETE | /api/users/:id | Superadmin |
-
----
-
-## Security Practices
-
-- Passwords hashed with bcrypt (10 salt rounds)
-- JWT tokens with 7-day expiry
-- Parameterized SQL queries to prevent injection
-- Helmet.js for secure response headers
-- Rate limiting — 10 requests per 15 min on auth routes
-- Role-based middleware on every protected route
-- Frontend route guards matching backend permissions
-
----
-
-## Roadmap
-
-- [ ] Input validation with express-validator
-- [ ] Create user form in frontend
-- [ ] Role change UI in users table
-- [ ] Deploy — Railway (backend) + Vercel (frontend)
-- [ ] Refresh token system
-- [ ] Profile page per user
+✅ Complete and deployed — built as the first project in a full-stack Vue + Express series, focusing on real-world patterns, clean architecture, and security-first development.

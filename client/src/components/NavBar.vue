@@ -7,7 +7,7 @@
           <v-icon :color="ui.theme.accent" size="22">mdi-shield-crown</v-icon>
         </div>
         <span class="logo-text syne" :style="{ background: ui.theme.gradient, '-webkit-background-clip': 'text', '-webkit-text-fill-color': 'transparent', 'background-clip': 'text' }">
-          AdminOS
+          Bastion
         </span>
       </div>
 
