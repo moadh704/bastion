@@ -141,7 +141,7 @@ user-management-dashboard/
 
 ## 🚀 Live Demo
 
-🔗 **[Live Demo](#)** — coming soon
+🔗 🔗 **[Live Demo](https://user-management-dashboard-alpha-lovat.vercel.app)**
 
 🔗 **[GitHub Repository](https://github.com/moadh704/user-management-dashboard)**
 
