@@ -141,12 +141,14 @@ user-management-dashboard/
 
 ## 🚀 Live Demo
 
-🔗 🔗 **[Live Demo](https://user-management-dashboard-alpha-lovat.vercel.app)**
+The Vercel page still loads: [user-management-dashboard-alpha-lovat.vercel.app](https://user-management-dashboard-alpha-lovat.vercel.app).
 
-🔗 **[GitHub Repository](https://github.com/moadh704/user-management-dashboard)**
+Login does not work there. That build calls `https://user-management-dashboard-production.up.railway.app/api`, and Railway returns "Application not found". The client in this repo does not hardcode that host. It uses `VITE_API_URL`, or `http://localhost:5000/api` when the variable is unset.
+
+To bring the demo back, deploy `server/` with its MySQL settings, set `VITE_API_URL` to that API on the Vercel project, and rebuild the client.
 
 ---
 
 ## 📌 Project Status
 
-✅ Complete and deployed — built as the first project in a full-stack Vue + Express series, focusing on real-world patterns, clean architecture, and security-first development.
+The Vue app and the Express API are in this repo. The public demo has no API behind it until the server is deployed again.
